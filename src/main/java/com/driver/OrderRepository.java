@@ -103,12 +103,31 @@ public class OrderRepository {
     }
 
     public void deletePartnerById(String partnerId) {
-        partnerMap.remove(partnerId);
 
+        partnerMap.remove(partnerId);
+        if (deliveryPartnerArrayListHashMap.containsKey(partnerId)) {
+            deliveryPartnerArrayListHashMap.remove(partnerId);
+            List<String> orderList = new ArrayList<>();
+            for (String order : orderDeliveryPartnerHashMap.keySet()) {
+                if (orderDeliveryPartnerHashMap.get(order).equals(partnerId)) orderList.add(order);
+            }
+            for (String order : orderList) orderDeliveryPartnerHashMap.remove(order);
+        }
     }
 
     public void deleteOrderById(String orderId) {
-        orderMap.remove(orderId);
 
+        orderMap.remove(orderId);
+        if (orderDeliveryPartnerHashMap.containsKey(orderId)) {
+            String partnerId = orderDeliveryPartnerHashMap.get(orderId);
+            orderDeliveryPartnerHashMap.remove(orderId);
+            List<String> ordersList = deliveryPartnerArrayListHashMap.get(partnerId);
+            List<String> newOrdersList = new ArrayList<String>();
+            for (String order : ordersList) {
+                if (order != orderId) newOrdersList.add(order);
+            }
+            deliveryPartnerArrayListHashMap.put(partnerId, newOrdersList);
+            partnerMap.get(partnerId).setNumberOfOrders(newOrdersList.size());
+        }
     }
 }
