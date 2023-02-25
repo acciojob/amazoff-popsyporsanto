@@ -7,9 +7,8 @@ import java.util.List;
 
 @Service
 public class OrderService {
-    @Autowired
-    OrderRepository orderRepository;
 
+    OrderRepository orderRepository = new OrderRepository();
 
     public void addOrder(Order order) {
         orderRepository.addOrder(order);
@@ -20,7 +19,7 @@ public class OrderService {
     }
 
     public void addOrderPartnerPair(String orderId, String partnerId) {
-        orderRepository.addOrderPartnerPair(orderId,partnerId);
+        orderRepository.addOrderPartnerPair(orderId, partnerId);
     }
 
     public Order getOrderById(String orderId) {
@@ -28,11 +27,12 @@ public class OrderService {
     }
 
     public DeliveryPartner getPartnerById(String partnerId) {
+
         return orderRepository.getPartnerById(partnerId);
     }
 
-    public Integer getOrderCountByPartnerId(String partnerId) {
-       return  orderRepository.getOrderCountByPartnerId(partnerId);
+    public int getOrderCountByPartnerId(String partnerId) {
+        return orderRepository.getOrderCountByPartnerId(partnerId);
     }
 
     public List<String> getOrdersByPartnerId(String partnerId) {
@@ -43,11 +43,11 @@ public class OrderService {
         return orderRepository.getAllOrders();
     }
 
-    public Integer getCountOfUnsignedOrders() {
-        return orderRepository.getCountOfUnsignedOrders();
+    public int getCountOfUnsignedOrders() {
+        return orderRepository.getCountOfUnassignedOrders();
     }
 
-    public Integer getOrdersLeftAfterGivenTimeByPartnerId(String time, String partnerId) {
+    public int getOrdersLeftAfterGivenTimeByPartnerId(String time, String partnerId) {
         return orderRepository.getOrdersLeftAfterGivenTimeByPartnerId(time, partnerId);
     }
 
@@ -62,4 +62,5 @@ public class OrderService {
     public void deleteOrderById(String orderId) {
         orderRepository.deleteOrderById(orderId);
     }
+
 }

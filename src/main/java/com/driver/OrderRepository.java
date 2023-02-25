@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 @Repository
 public class OrderRepository {
     private HashMap<String, Order> orderMap;
@@ -42,23 +43,17 @@ public class OrderRepository {
     }
 
     public DeliveryPartner getPartnerById(String partnerId) {
-        if (!partnerMap.containsKey(partnerId))
-            return null;
-
+        if (!partnerMap.containsKey(partnerId)) return null;
         return partnerMap.get(partnerId);
     }
 
-    public Integer getOrderCountByPartnerId(String partnerId) {
-        if (!partnerMap.containsKey(partnerId))
-            return 0;
-
+    public int getOrderCountByPartnerId(String partnerId) {
+        if (!partnerMap.containsKey(partnerId)) return 0;
         return partnerMap.get(partnerId).getNumberOfOrders();
     }
 
     public List<String> getOrdersByPartnerId(String partnerId) {
-        if (!partnerMap.containsKey(partnerId))
-            return null;
-
+        if (!partnerMap.containsKey(partnerId)) return null;
         return deliveryPartnerArrayListHashMap.get(partnerId);
     }
 
@@ -70,11 +65,11 @@ public class OrderRepository {
         return ordersList;
     }
 
-    public Integer getCountOfUnsignedOrders() {
+    public int getCountOfUnassignedOrders() {
         return orderMap.size() - orderDeliveryPartnerHashMap.size();
     }
 
-    public Integer getOrdersLeftAfterGivenTimeByPartnerId(String time, String partnerId) {
+    public int getOrdersLeftAfterGivenTimeByPartnerId(String time, String partnerId) {
         int count = 0;
         List<String> ordersList = deliveryPartnerArrayListHashMap.get(partnerId);
         int expectedTime = Integer.parseInt(time.substring(0, 2)) * 60 + Integer.parseInt(time.substring(3));
@@ -99,11 +94,9 @@ public class OrderRepository {
             minutes = "0" + minutes;
         }
         return hours + ":" + minutes;
-
     }
 
     public void deletePartnerById(String partnerId) {
-
         partnerMap.remove(partnerId);
         if (deliveryPartnerArrayListHashMap.containsKey(partnerId)) {
             deliveryPartnerArrayListHashMap.remove(partnerId);
@@ -116,7 +109,6 @@ public class OrderRepository {
     }
 
     public void deleteOrderById(String orderId) {
-
         orderMap.remove(orderId);
         if (orderDeliveryPartnerHashMap.containsKey(orderId)) {
             String partnerId = orderDeliveryPartnerHashMap.get(orderId);
